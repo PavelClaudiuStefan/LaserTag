@@ -1,5 +1,8 @@
-# LaserTag
-Proiect programare avansata obiecte
+# LaserTag - Proiect PAO
+
+Pavel Claudiu Stefan
+
+Mihai George
 
 O companie care organizeaza competitii de laser tag are nevoie de o aplicatie care sa monitorizeze jucatorii. Regulile sunt foarte stricte. Un jucator care este atins nu poate sa mai loveasca pe nimeni timp de 5 secunde, iar daca e atins de 3 ori nu mai poate sa loveasca pe nimeni.
 
