@@ -39,16 +39,14 @@ public class ClientGUI extends JFrame {
         targetPlayer = new JTextField("1");
         panel.add(targetPlayer);
 
-//        tempButton = new JLabel("Button");
-//        panel.add(tempButton);
         sendInfoButton = new JButton("Send info");
         sendInfoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //TEMPORAR
                 System.out.println(sourcePlayer.getText() + " " + targetPlayer.getText());
-                //client.sendInfoToPlayer(Integer.parseInt(sourcePlayer.getText()), Integer.parseInt(targetPlayer.getText()));
-                client.sendInfoToPlayer(0, 1);
+                client.sendInfoToPlayer(Integer.parseInt(sourcePlayer.getText()), Integer.parseInt(targetPlayer.getText()));
+                //client.sendInfoToPlayer(0, 1);
 
             }
         });

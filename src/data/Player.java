@@ -2,10 +2,9 @@ package data;
 
 public class Player {
 
-    //More atributes:
-    // - Team
-    // - inActiveGame
     private int id;
+    //teamId == -1 : The player is not in a team
+    private int teamId;
     private String name;
 
     private int numberOfHitsGiven;
@@ -14,6 +13,7 @@ public class Player {
 
     Player(int id, String name) {
         this.id = id;
+        teamId = -1;
         this.name = name;
     }
 
@@ -40,5 +40,13 @@ public class Player {
         numberOfHitsTaken = 0;
         numberOfHitsGiven = 0;
         inActiveGame = true;
+    }
+
+    public int getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 }

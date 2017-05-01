@@ -69,7 +69,7 @@ public class Server {
     }
 
     //Maybe put a JButton in the server gui
-    //way for gui to stop server
+    //A way for gui to stop server
     protected void stop() {
         keepGoing = false;
     }
@@ -100,7 +100,9 @@ public class Server {
             boolean keepLooping = true;
             while(keepLooping) {
                 try {
+                    infoMessage = new InfoMessage();
                     infoMessage = (InfoMessage) input.readObject();
+                    System.out.println("Debug: " + infoMessage.getSourcePlayer() + infoMessage.getTargetPlayer());
                 } catch (IOException e) {
                     e.printStackTrace();
                     //TEMPORAR
@@ -131,7 +133,7 @@ public class Server {
         public void updatePlayer(){
             //Update an object from the Player class
             //If Player is in the active game -> update score
-            serverGUI.updateScore("Player #" + infoMessage.getSourcePlayer() + " shot Player #" + infoMessage.getTargetPlayer() + " in the face!\n");
+            //serverGUI.updateScore("Player #" + infoMessage.getSourcePlayer() + " shot Player #" + infoMessage.getTargetPlayer() + " in the face!\n");
         }
 
     }

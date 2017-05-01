@@ -9,6 +9,10 @@ public class InfoMessage implements Serializable {
     int sourcePlayer;
     int targetPlayer;
 
+    public InfoMessage() {
+
+    }
+
     public InfoMessage(int sourcePlayer, int targetPlayer) {
         this.sourcePlayer = sourcePlayer;
         this.targetPlayer = targetPlayer;
