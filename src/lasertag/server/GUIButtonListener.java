@@ -1,12 +1,15 @@
-package server;
+package lasertag.server;
 
-import data.Team;
+import lasertag.data.Team;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GUIButtonListener implements ActionListener  {
+
+    //TODO
+    ChampionshipFrame championshipFrame;
 
     private int option;
     private TeamsFrame teamsFrame;
@@ -19,6 +22,12 @@ public class GUIButtonListener implements ActionListener  {
     public GUIButtonListener(int option, TeamsFrame teamsFrame) {
         this.option = option;
         this.teamsFrame = teamsFrame;
+    }
+
+    public GUIButtonListener(int option, TeamsFrame teamsFrame, ChampionshipFrame cFrame) {
+        this.option = option;
+        this.teamsFrame = teamsFrame;
+        this.championshipFrame = cFrame;
     }
 
     @Override
@@ -72,7 +81,7 @@ public class GUIButtonListener implements ActionListener  {
                 championshipTeams.add(team);
             }
         }
-        ChampionshipFrame championshipFrame = new ChampionshipFrame(championshipTeams);
+        championshipFrame = new ChampionshipFrame(championshipTeams);
         championshipFrame.start();
 
         teamsFrame.dispose();

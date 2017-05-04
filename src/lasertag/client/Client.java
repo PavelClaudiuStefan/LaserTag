@@ -1,10 +1,9 @@
-package client;
+package lasertag.client;
 
-import data.InfoMessage;
+import lasertag.data.InfoMessage;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Client {

@@ -1,16 +1,17 @@
-package server;
+package lasertag.server;
 
 public class ServerGUI {
 
     private Server server;
+    ChampionshipFrame cFrame;
 
     public ServerGUI(String host, int port) {
-        server = new Server(host, port, this);
+        server = new Server(host, port, this, cFrame);
     }
 
     public void start() {
         new ServerRunning().start();
-        TeamsFrame teamsFrame = new TeamsFrame();
+        TeamsFrame teamsFrame = new TeamsFrame(cFrame);
         teamsFrame.revalidate();
     }
 

@@ -1,10 +1,10 @@
-package server;
+package lasertag.server;
 
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
-import data.InfoMessage;
+import lasertag.data.InfoMessage;
 
 public class Server {
 
@@ -14,15 +14,17 @@ public class Server {
     private String host;
     private int port;
     private ServerGUI serverGUI;
+    ChampionshipFrame cFrame;
     boolean keepGoing;
 
     Socket socket;
 
-    public Server(String host, int port, ServerGUI serverGUI) {
+    public Server(String host, int port, ServerGUI serverGUI, ChampionshipFrame cFrame) {
         clientList = new ArrayList<>();
         this.host = host;
         this.port = port;
         this.serverGUI = serverGUI;
+        this.cFrame = cFrame;
     }
 
     public void start() {
@@ -133,7 +135,7 @@ public class Server {
         public void updatePlayer(){
             //Update an object from the Player class
             //If Player is in the active game -> update score
-            //serverGUI.updateScore("Player #" + infoMessage.getSourcePlayer() + " shot Player #" + infoMessage.getTargetPlayer() + " in the face!\n");
+            cFrame.updateScore("Player #" + infoMessage.getSourcePlayer() + " shot Player #" + infoMessage.getTargetPlayer() + " in the face!\n");
         }
 
     }

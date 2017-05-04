@@ -1,13 +1,16 @@
-package server;
+package lasertag.server;
 
-import data.PlayersDAO;
-import data.Team;
+import lasertag.data.PlayersDAO;
+import lasertag.data.Team;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 class TeamsFrame extends JFrame{
+
+    //TODO
+    ChampionshipFrame cFrame;
 
     private JPanel teamsPanel;
     private JPanel chosenTeamsPanel;
@@ -19,8 +22,11 @@ class TeamsFrame extends JFrame{
 
     private GridBagConstraints constraints;
 
-    TeamsFrame() {
+    TeamsFrame(ChampionshipFrame cFrame) {
         super("LaserTag : Teams");
+
+        //TODO
+        this.cFrame = cFrame;
 
         //Initiate the list of teams and the list of respective checkboxes
         PlayersDAO dao = new PlayersDAO();
@@ -146,7 +152,7 @@ class TeamsFrame extends JFrame{
         removeTeamButton.setFocusPainted(false);
         removeTeamButton.setFocusable(false);
         removeTeamButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        removeTeamButton.addActionListener(new GUIButtonListener(GUIButtonListener.REMOVE_TEAM, this));
+        removeTeamButton.addActionListener(new GUIButtonListener(GUIButtonListener.REMOVE_TEAM, this, cFrame));
         buttonsPanel.add(removeTeamButton);
 
         //******************************************************************** Button #4 : Start championship

@@ -1,4 +1,4 @@
-package data;
+package lasertag.data;
 
 import java.util.ArrayList;
 

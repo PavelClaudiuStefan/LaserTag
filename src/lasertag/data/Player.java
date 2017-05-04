@@ -1,4 +1,4 @@
-package data;
+package lasertag.data;
 
 public class Player {
 

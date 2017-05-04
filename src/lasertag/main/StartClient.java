@@ -1,6 +1,6 @@
-package main;
+package lasertag.main;
 
-import client.ClientGUI;
+import lasertag.client.ClientGUI;
 
 public class StartClient {
 

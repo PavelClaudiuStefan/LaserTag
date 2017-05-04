@@ -1,6 +1,6 @@
-package main;
+package lasertag.main;
 
-import server.ServerGUI;
+import lasertag.server.ServerGUI;
 
 public class StartServer {
 

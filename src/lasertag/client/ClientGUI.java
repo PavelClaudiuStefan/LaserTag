@@ -1,6 +1,4 @@
-package client;
-
-import data.InfoMessage;
+package lasertag.client;
 
 import javax.swing.*;
 import java.awt.*;
