@@ -1,9 +1,18 @@
 package lasertag.server;
 
+import jdk.nashorn.internal.scripts.JD;
 import lasertag.data.Team;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
 public class GUIButtonListener implements ActionListener  {
@@ -13,6 +22,7 @@ public class GUIButtonListener implements ActionListener  {
 
     private int option;
     private TeamsFrame teamsFrame;
+    private ServerGUI serverGUI;
 
     public static final int NEW_TEAM = 1;
     public static final int ADD_TEAM = 2;
@@ -24,10 +34,10 @@ public class GUIButtonListener implements ActionListener  {
         this.teamsFrame = teamsFrame;
     }
 
-    public GUIButtonListener(int option, TeamsFrame teamsFrame, ChampionshipFrame cFrame) {
+    public GUIButtonListener(int option, TeamsFrame teamsFrame, ServerGUI serverGUI) {
         this.option = option;
         this.teamsFrame = teamsFrame;
-        this.championshipFrame = cFrame;
+        this.serverGUI = serverGUI;
     }
 
     @Override
@@ -59,6 +69,8 @@ public class GUIButtonListener implements ActionListener  {
                 teamsFrame.moveToChampionship(teamsFrame.teamCheckBoxesList.get(i));
             }
         }
+        //teamsFrame.revalidate();
+        teamsFrame.repaint();
     }
 
     private void removeTeam() {
@@ -70,20 +82,51 @@ public class GUIButtonListener implements ActionListener  {
                 teamsFrame.moveFromChampionship(teamsFrame.teamCheckBoxesList.get(i));
             }
         }
+        //teamsFrame.revalidate();
+        teamsFrame.repaint();
     }
 
     private void startChampionship() {
-        System.out.println("GOODBYE TEAMS FRAME");
-
         ArrayList<Team> championshipTeams = new ArrayList<>(101);
         for (Team team : teamsFrame.teamsList) {
             if (team.isInChampionship()) {
                 championshipTeams.add(team);
             }
         }
-        championshipFrame = new ChampionshipFrame(championshipTeams);
-        championshipFrame.start();
+        if (validNumberOfTeams(championshipTeams.size())) {
+            serverGUI.startChampionship(championshipTeams);
+            teamsFrame.dispose();
+        } else {
+            playSound("xpError.wav");
 
-        teamsFrame.dispose();
+            JOptionPane.showMessageDialog(teamsFrame,
+                    "The number of teams must be a power of 2, greater than 1 (Examples: 2, 4, 8, 16, 32...)",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean validNumberOfTeams(int x) {
+        boolean isValid = (x & (x - 1)) == 0 && x != 0 && x != 1;
+        System.out.println("x = " + x + " " + isValid);
+        return isValid;
+    }
+
+    public static synchronized void playSound(final String url) {
+        new Thread(new Runnable() {
+            // The wrapper thread is unnecessary, unless it blocks on the
+            // Clip finishing; see comments.
+            public void run() {
+                try {
+                    Clip clip = AudioSystem.getClip();
+                    AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+                            GUIButtonListener.class.getResourceAsStream("/lasertag/sounds/" + url));
+                    clip.open(inputStream);
+                    clip.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

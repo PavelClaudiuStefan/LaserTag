@@ -9,24 +9,22 @@ import java.util.ArrayList;
 
 class TeamsFrame extends JFrame{
 
-    //TODO
-    ChampionshipFrame cFrame;
-
     private JPanel teamsPanel;
     private JPanel chosenTeamsPanel;
     private JPanel buttonsPanel;
     private JScrollPane scroll;
+
+    private ServerGUI serverGUI;
 
     ArrayList<Team> teamsList;
     ArrayList<JCheckBox> teamCheckBoxesList;
 
     private GridBagConstraints constraints;
 
-    TeamsFrame(ChampionshipFrame cFrame) {
+    TeamsFrame(ServerGUI serverGUI) {
         super("LaserTag : Teams");
 
-        //TODO
-        this.cFrame = cFrame;
+        this.serverGUI = serverGUI;
 
         //Initiate the list of teams and the list of respective checkboxes
         PlayersDAO dao = new PlayersDAO();
@@ -152,14 +150,14 @@ class TeamsFrame extends JFrame{
         removeTeamButton.setFocusPainted(false);
         removeTeamButton.setFocusable(false);
         removeTeamButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        removeTeamButton.addActionListener(new GUIButtonListener(GUIButtonListener.REMOVE_TEAM, this, cFrame));
+        removeTeamButton.addActionListener(new GUIButtonListener(GUIButtonListener.REMOVE_TEAM, this));
         buttonsPanel.add(removeTeamButton);
 
         //******************************************************************** Button #4 : Start championship
         JButton startChampionshipButton = new JButton("<html>Start<br/>championship</html>");
         startChampionshipButton.setFocusPainted(false);
         startChampionshipButton.setFont(new Font("Arial", Font.PLAIN, 18));
-        startChampionshipButton.addActionListener(new GUIButtonListener(GUIButtonListener.START_CHAMPIONSHIP, this));
+        startChampionshipButton.addActionListener(new GUIButtonListener(GUIButtonListener.START_CHAMPIONSHIP, this, serverGUI));
         buttonsPanel.add(startChampionshipButton);
     }
 
@@ -167,6 +165,10 @@ class TeamsFrame extends JFrame{
         JCheckBox checkBox = new JCheckBox(team.getName(), false);
         checkBox.setBackground(Color.cyan);
         return checkBox;
+    }
+
+    public ArrayList<Team> getChampionshipTeamsList() {
+        return teamsList;
     }
 
 }

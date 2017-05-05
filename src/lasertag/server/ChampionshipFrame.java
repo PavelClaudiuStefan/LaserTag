@@ -12,6 +12,8 @@ public class ChampionshipFrame extends JFrame{
     ArrayList<Team> championshipTeams;
     JTextArea debugTextArea;
 
+    GridBagConstraints constraints;
+
     ChampionshipFrame(ArrayList<Team> championshipTeams) {
         super("Championship");
         this.championshipTeams = championshipTeams;
@@ -21,34 +23,43 @@ public class ChampionshipFrame extends JFrame{
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
 
-    void start() {
         setDebugHeader();
+
+
+        revalidate();
+        repaint();
     }
 
     private void setDebugHeader() {
         debugTextArea = new JTextArea();
-        GridBagConstraints constraints = new GridBagConstraints();
+        constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 1;
-        constraints.weighty = 1;
+        constraints.weightx = 1.0;
+        constraints.weighty = 0.2;
         constraints.fill = GridBagConstraints.BOTH;
         debugTextArea.setEditable(false);
         JScrollPane scroll = new JScrollPane(debugTextArea);
         scroll.setBorder(BorderFactory.createLineBorder(Color.black));
         add(scroll, constraints);
+        for(Team team : championshipTeams) {
+            debugTextArea.append(team.getName() + "\n");
+        }
     }
 
-    void updateScore(String message) {
+    void debugInfo(int source, int target) {
         try {
-            debugTextArea.getDocument().insertString(0, message, null);
+            String infoMessage = "Player with id #" + target + " was hit by player with id#" + source + ";\n";
+            debugTextArea.getDocument().insertString(1, infoMessage, null);
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
+    }
+
+    void updateGameScore(int source, int target) {
         //TODO
-        //Update Players score and database
+        System.out.println("Not made yet : " + source + " hit " + target);
     }
 
 }

@@ -14,17 +14,15 @@ public class Server {
     private String host;
     private int port;
     private ServerGUI serverGUI;
-    ChampionshipFrame cFrame;
     boolean keepGoing;
 
     Socket socket;
 
-    public Server(String host, int port, ServerGUI serverGUI, ChampionshipFrame cFrame) {
+    public Server(String host, int port, ServerGUI serverGUI) {
         clientList = new ArrayList<>();
         this.host = host;
         this.port = port;
         this.serverGUI = serverGUI;
-        this.cFrame = cFrame;
     }
 
     public void start() {
@@ -135,7 +133,7 @@ public class Server {
         public void updatePlayer(){
             //Update an object from the Player class
             //If Player is in the active game -> update score
-            cFrame.updateScore("Player #" + infoMessage.getSourcePlayer() + " shot Player #" + infoMessage.getTargetPlayer() + " in the face!\n");
+            serverGUI.sendInfoToChampionshipFrame(infoMessage.getSourcePlayer(), infoMessage.getTargetPlayer());
         }
 
     }
