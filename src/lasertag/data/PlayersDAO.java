@@ -16,9 +16,9 @@ public class PlayersDAO {
 
         //TODO Read players from a database
         //TEMPORAR
-        //Create 10 players for testing
-        for (int i = 0; i < 10; i++) {
-            Player player = new Player(i, "Player #" + i + 1);
+        //Create players for testing
+        for (int i = 0; i < 34; i++) {
+            Player player = new Player(i, "Player #" + i);
             playerList.add(player);
         }
     }
@@ -32,14 +32,16 @@ public class PlayersDAO {
 
         //TEMPORAR
         //Create teams with the existent temporar players
-        for(int i = 0; i < playerList.size(); i += 2) {
+        for(int i = 0; i < playerList.size()-1; i += 2) {
             Team team = new Team("Team #" + (i/2+1));
             team.addPlayer(playerList.get(i));
             team.addPlayer(playerList.get(i+1));
             teamsList.add(team);
         }
 
-        teamsList.get(1).setInChampionship(true);
+        for (int i = 0; i  < 16; i++) {
+            teamsList.get(i).setInChampionship(true);
+        }
 
         return teamsList;
     }

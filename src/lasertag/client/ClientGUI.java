@@ -2,63 +2,96 @@ package lasertag.client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ClientGUI extends JFrame {
     private static final long serialVersionUID = 1L;
 
     private Client client;
-    private JLabel sourcePlayerLabel;
-    private JTextField sourcePlayer;
-    private JLabel targetPlayerLabel;
-    private JTextField targetPlayer;
-    private JButton sendInfoButton;
-
-    //private InfoMessage infoMessage;
 
     public ClientGUI(String host, int port) {
         super("Client");
-        client = new Client(host, port, this);
+        client = new Client(host, port);
         client.start();
+
+        //
+        simulateChampionship();
     }
 
-    public void start() {
-        //TEMPORAR
+    public synchronized void start() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        JLabel sourcePlayerLabel = new JLabel("Source:");
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.ipadx = 1;
+        constraints.ipady = 1;
+        constraints.weightx = 0.5;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        panel.add(sourcePlayerLabel, constraints);
 
-        JPanel panel = new JPanel(new GridLayout(3,2));
-        sourcePlayerLabel = new JLabel("First player");
-        panel.add(sourcePlayerLabel);
-        sourcePlayer = new JTextField("0");
-        panel.add(sourcePlayer);
+        JTextField sourcePlayer = new JTextField("0");
+        constraints = new GridBagConstraints();
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        panel.add(sourcePlayer, constraints);
 
-        targetPlayerLabel = new JLabel("Second player");
-        panel.add(targetPlayerLabel);
-        targetPlayer = new JTextField("1");
-        panel.add(targetPlayer);
 
-        sendInfoButton = new JButton("Send info");
-        sendInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TEMPORAR
-                System.out.println(sourcePlayer.getText() + " " + targetPlayer.getText());
-                client.sendInfoToPlayer(Integer.parseInt(sourcePlayer.getText()), Integer.parseInt(targetPlayer.getText()));
-                //client.sendInfoToPlayer(0, 1);
+        JLabel targetPlayerLabel = new JLabel("Target:");
+        constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        constraints.weightx = 0.5;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        panel.add(targetPlayerLabel, constraints);
 
-            }
-        });
-        panel.add(sendInfoButton);
+        JTextField targetPlayer = new JTextField("1");
+        constraints = new GridBagConstraints();
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        panel.add(targetPlayer, constraints);
+
+
+        JButton sendInfoButton = new JButton("Send info");
+        constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.BOTH;
+        sendInfoButton.addActionListener(e -> client.sendInfoToPlayer(Integer.parseInt(sourcePlayer.getText()), Integer.parseInt(targetPlayer.getText())));
+        panel.add(sendInfoButton, constraints);
 
         add(panel);
 
-
-        setSize(200, 300);
+        setSize(250, 200);
+        //setLocationRelativeTo(null);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //END OF TEMPORAR
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
-
+    public void simulateChampionship() {
+        for(int i = 0; i < 30; i+=2) {
+            for (int j = 0; j < 3; j++) {
+                client.sendInfoToPlayer(i, i+2);
+                System.out.println(i + " " + (i + 2));
+                client.sendInfoToPlayer(i, i+3);
+                System.out.println(i + " " + (i + 3));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println();
+        }
+    }
 }

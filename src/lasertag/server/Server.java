@@ -14,9 +14,8 @@ public class Server {
     private String host;
     private int port;
     private ServerGUI serverGUI;
-    boolean keepGoing;
+    private boolean keepGoing;
 
-    Socket socket;
 
     public Server(String host, int port, ServerGUI serverGUI) {
         clientList = new ArrayList<>();
@@ -34,7 +33,7 @@ public class Server {
                 //TEMPORAR
                 System.out.println("Server waiting for Clients on port " + port + ".");
 
-                socket = serverSocket.accept();
+                Socket socket = serverSocket.accept();
                 if(!keepGoing) {
                     break;
                 }
@@ -102,7 +101,6 @@ public class Server {
                 try {
                     infoMessage = new InfoMessage();
                     infoMessage = (InfoMessage) input.readObject();
-                    System.out.println("Debug: " + infoMessage.getSourcePlayer() + infoMessage.getTargetPlayer());
                 } catch (IOException e) {
                     e.printStackTrace();
                     //TEMPORAR
@@ -113,7 +111,7 @@ public class Server {
                 }
                 //TEMPORAR
                 //Do something with infoMessage
-                updatePlayer();
+                sendInfo();
             }
             close();
         }
@@ -130,10 +128,9 @@ public class Server {
             catch (Exception e) {}
         }
 
-        public void updatePlayer(){
-            //Update an object from the Player class
-            //If Player is in the active game -> update score
+        public void sendInfo(){
             serverGUI.sendInfoToChampionshipFrame(infoMessage.getSourcePlayer(), infoMessage.getTargetPlayer());
+            //TODO : Update the database
         }
 
     }

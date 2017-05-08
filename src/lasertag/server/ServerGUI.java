@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class ServerGUI {
 
     private Server server;
-    ChampionshipFrame championshipFrame;
+    private ChampionshipFrame championshipFrame;
 
     public ServerGUI(String host, int port) {
         server = new Server(host, port, this);
@@ -19,15 +19,13 @@ public class ServerGUI {
         teamsFrame.revalidate();
     }
 
-    public void startChampionship(ArrayList<Team> teamsList) {
+    void startChampionship(ArrayList<Team> teamsList) {
         championshipFrame = new ChampionshipFrame(teamsList);
         championshipFrame.revalidate();
     }
 
-    public void sendInfoToChampionshipFrame(int source, int target) {
-        championshipFrame.debugInfo(source, target);
-        //TODO : Update game score;
-        championshipFrame.updateGameScore(source, target);
+    void sendInfoToChampionshipFrame(int source, int target) {
+        championshipFrame.update(source, target);
     }
 
     class ServerRunning extends Thread {

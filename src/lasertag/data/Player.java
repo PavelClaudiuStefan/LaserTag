@@ -9,12 +9,17 @@ public class Player {
 
     private int numberOfHitsGiven;
     private int numberOfHitsTaken;
-    private boolean inActiveGame;
+    private boolean alive;
 
     Player(int id, String name) {
         this.id = id;
         teamId = -1;
         this.name = name;
+        alive = true;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getNumberOfHitsGiven() {
@@ -32,14 +37,18 @@ public class Player {
     public void wasHit() {
         numberOfHitsTaken++;
         if (numberOfHitsTaken == 3) {
-            inActiveGame = false;
+            alive = false;
         }
     }
 
-    public void playerNewGame() {
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void resetSore() {
         numberOfHitsTaken = 0;
         numberOfHitsGiven = 0;
-        inActiveGame = true;
+        alive = true;
     }
 
     public int getTeamId() {
@@ -48,5 +57,9 @@ public class Player {
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
+    }
+
+    public String getName() {
+        return name;
     }
 }

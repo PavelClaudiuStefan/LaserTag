@@ -166,9 +166,4 @@ class TeamsFrame extends JFrame{
         checkBox.setBackground(Color.cyan);
         return checkBox;
     }
-
-    public ArrayList<Team> getChampionshipTeamsList() {
-        return teamsList;
-    }
-
 }
