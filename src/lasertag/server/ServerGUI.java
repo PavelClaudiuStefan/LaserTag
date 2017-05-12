@@ -9,8 +9,8 @@ public class ServerGUI {
     private Server server;
     private ChampionshipFrame championshipFrame;
 
-    public ServerGUI(String host, int port) {
-        server = new Server(host, port, this);
+    public ServerGUI(int port) {
+        server = new Server(port, this);
     }
 
     public void start() {

@@ -6,28 +6,25 @@ import java.util.ArrayList;
 
 import lasertag.data.InfoMessage;
 
-public class Server {
+class Server {
 
     private static int uniqueId;
     private ArrayList<ClientThread> clientList;
 
-    private String host;
     private int port;
     private ServerGUI serverGUI;
     private boolean keepGoing;
 
 
-    public Server(String host, int port, ServerGUI serverGUI) {
+    Server(int port, ServerGUI serverGUI) {
         clientList = new ArrayList<>();
-        this.host = host;
         this.port = port;
         this.serverGUI = serverGUI;
     }
 
-    public void start() {
+    void start() {
         try {
             ServerSocket serverSocket = new ServerSocket(port);
-
             keepGoing = true;
             while(keepGoing) {
                 //TEMPORAR
@@ -44,9 +41,7 @@ public class Server {
             //keepGoing == false
             try {
                 serverSocket.close();
-                for (int i = 0; i < clientList.size(); i++) {
-                    ClientThread tc = clientList.get(i);
-
+                for (ClientThread tc : clientList) {
                     try {
                         tc.input.close();
                         tc.socket.close();
@@ -69,9 +64,9 @@ public class Server {
 
     //Maybe put a JButton in the server gui
     //A way for gui to stop server
-    protected void stop() {
+    /*protected void stop() {
         keepGoing = false;
-    }
+    }*/
 
     class ClientThread extends Thread {
 
@@ -116,19 +111,23 @@ public class Server {
             close();
         }
 
-        public void close() {
+        void close() {
             // try to close the connection
             try {
                 if(input != null) input.close();
             }
-            catch(Exception e) {};
+            catch(Exception e) {
+                e.printStackTrace();
+            }
             try {
                 if(socket != null) socket.close();
             }
-            catch (Exception e) {}
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        public void sendInfo(){
+        void sendInfo(){
             serverGUI.sendInfoToChampionshipFrame(infoMessage.getSourcePlayer(), infoMessage.getTargetPlayer());
             //TODO : Update the database
         }

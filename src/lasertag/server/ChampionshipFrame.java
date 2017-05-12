@@ -37,7 +37,7 @@ public class ChampionshipFrame extends JFrame{
         //Collections.shuffle(championshipTeams, new Random(seed));
 
         setLayout(new GridBagLayout());
-        setSize(600, 700);
+        setSize(700, 500);
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -246,7 +246,10 @@ public class ChampionshipFrame extends JFrame{
     }
 
     private void advanceTeam(Team winningTeam, int roundNumber, int roundOrder){
-        rounds.get(roundNumber + 1).getGame(roundOrder / 2).setTeam(winningTeam, roundOrder % 2);
-        System.out.println(winningTeam.getName() + " : " + roundNumber + " & " + roundOrder + " -> " + roundOrder/2 + " & " + roundOrder%2);
+        if(roundNumber < rounds.size()-1); {
+            rounds.get(roundNumber + 1).getGame(roundOrder / 2).setTeam(winningTeam, roundOrder % 2);
+            System.out.println(winningTeam.getName() + " : " + roundNumber + " & " + roundOrder + " -> " + roundOrder/2 + " & " + roundOrder%2);
+        }
+
     }
 }

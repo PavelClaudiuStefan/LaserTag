@@ -37,11 +37,16 @@ public class Game {
     }
 
     public void setTeam(Team team, int number) {
+        team.resetScore();
         if(number == 0) {
             team1 = team;
+            gameLabel = team1.getName() + " vs TBD";
         } else {
             team2 = team;
+            gameLabel = team1.getName() + " vs " + team2.getName();
         }
+
+        determinedTeams++;
     }
 
     public Team getTeam(int teamNumber){

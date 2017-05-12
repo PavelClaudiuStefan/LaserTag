@@ -13,7 +13,6 @@ public class ClientGUI extends JFrame {
         client = new Client(host, port);
         client.start();
 
-        //
         simulateChampionship();
     }
 

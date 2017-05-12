@@ -45,7 +45,7 @@ public class Player {
         return alive;
     }
 
-    public void resetSore() {
+    void resetSore() {
         numberOfHitsTaken = 0;
         numberOfHitsGiven = 0;
         alive = true;
