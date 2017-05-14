@@ -11,7 +11,7 @@ public class Team {
     private int numberOfPlayers;
     private boolean inChampionship;
 
-    Team(String name) {
+    public Team(String name) {
         id = ++uniqueId;
         this.name = name;
         numberOfPlayers = 2;
@@ -20,7 +20,7 @@ public class Team {
         playerList = new ArrayList<>(numberOfPlayers);
     }
 
-    void addPlayer(Player player) {
+    public void addPlayer(Player player) {
         playerList.add(player);
     }
 
@@ -28,9 +28,9 @@ public class Team {
         return playerList;
     }
 
-    public int getId() {
+    /*public int getId() {
         return id;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -67,11 +67,11 @@ public class Team {
         return hits;
     }
 
-    public int getNumberOfPlayers() {
+    /*public int getNumberOfPlayers() {
         return numberOfPlayers;
-    }
+    }*/
 
-    public void resetScore() {
+    void resetScore() {
         for (Player p : playerList) {
             p.resetSore();
         }

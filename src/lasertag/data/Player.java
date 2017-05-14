@@ -6,6 +6,7 @@ public class Player {
     //teamId == -1 : The player is not in a team
     private int teamId;
     private String name;
+    private static int lastIdUsed;
 
     private int numberOfHitsGiven;
     private int numberOfHitsTaken;
@@ -13,6 +14,15 @@ public class Player {
 
     Player(int id, String name) {
         this.id = id;
+        lastIdUsed = id;
+        teamId = -1;
+        this.name = name;
+        alive = true;
+    }
+
+    public Player(String name) {
+        this.id = lastIdUsed;
+        lastIdUsed++;
         teamId = -1;
         this.name = name;
         alive = true;

@@ -2,6 +2,7 @@ package lasertag.server;
 
 import lasertag.data.Team;
 
+
 import java.util.ArrayList;
 
 public class ServerGUI {

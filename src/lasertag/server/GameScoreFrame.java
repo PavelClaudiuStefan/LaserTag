@@ -4,7 +4,6 @@ import lasertag.data.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 class GameScoreFrame extends JFrame{
 
@@ -143,7 +142,7 @@ class GameScoreFrame extends JFrame{
         }
     }
 
-    public void updateGameScore() {
+    void updateGameScore() {
         remove(gameScorePanel);
         showGameScore();
         revalidate();

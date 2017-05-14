@@ -50,7 +50,7 @@ public class GUIButtonListener implements ActionListener  {
     }
 
     private void newTeam() {
-
+        teamsFrame.startNewTeamsFrame();
     }
 
     private void addTeam() {

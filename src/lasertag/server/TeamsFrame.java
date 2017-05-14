@@ -15,6 +15,7 @@ class TeamsFrame extends JFrame{
     private JScrollPane scroll;
 
     private ServerGUI serverGUI;
+    private NewTeamFrame newTeamFrame;
 
     ArrayList<Team> teamsList;
     ArrayList<JCheckBox> teamCheckBoxesList;
@@ -60,7 +61,7 @@ class TeamsFrame extends JFrame{
         constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.weightx = 1.0;
+        constraints.weightx = 0.5;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
 
@@ -84,7 +85,7 @@ class TeamsFrame extends JFrame{
         constraints = new GridBagConstraints();
         constraints.gridx = 1;
         constraints.gridy = 0;
-        constraints.weightx = 1.0;
+        constraints.weightx = 0.5;
         constraints.weighty = 1.0;
         constraints.fill = GridBagConstraints.BOTH;
 
@@ -165,5 +166,34 @@ class TeamsFrame extends JFrame{
         JCheckBox checkBox = new JCheckBox(team.getName(), false);
         checkBox.setBackground(Color.cyan);
         return checkBox;
+    }
+
+    void update() {
+
+        remove(teamsPanel);
+        remove(chosenTeamsPanel);
+        remove(buttonsPanel);
+
+        teamCheckBoxesList = new ArrayList<>();
+        if (teamsList != null) {
+            for (Team t : teamsList) {
+                teamCheckBoxesList.add(makeCheckBoxFromTeam(t));
+            }
+        }
+
+        addTeamsPanel();
+        addChosenTeamsPanel();
+        addButtonsPanel();
+
+        revalidate();
+        repaint();
+    }
+
+    void startNewTeamsFrame(){
+        if(newTeamFrame != null) {
+            newTeamFrame.dispose();
+        }
+        newTeamFrame = new NewTeamFrame(this);
+        newTeamFrame.start();
     }
 }

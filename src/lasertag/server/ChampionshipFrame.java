@@ -14,7 +14,7 @@ import lasertag.data.Player;
 import lasertag.data.Team;
 import lasertag.data.Round;
 
-public class ChampionshipFrame extends JFrame{
+class ChampionshipFrame extends JFrame{
 
     private Game currentGame;
     private ArrayList<Team> championshipTeams;
@@ -76,7 +76,7 @@ public class ChampionshipFrame extends JFrame{
         add(scroll, constraints);
     }
 
-    void debugInfo(String message) {
+    private void debugInfo(String message) {
         if (debugTextArea != null) {
             try {
                 Calendar cal = Calendar.getInstance();
@@ -90,7 +90,7 @@ public class ChampionshipFrame extends JFrame{
         }
     }
 
-    void setBracketPanel() {
+    private void setBracketPanel() {
         bracketPanel = new JPanel();
         bracketPanel.setLayout(new GridBagLayout());
         bracketPanel.setBackground(Color.CYAN);
@@ -109,7 +109,7 @@ public class ChampionshipFrame extends JFrame{
         }
     }
 
-    void setRoundPanel(int roundNumber) {
+    private void setRoundPanel(int roundNumber) {
         JPanel roundPanel = new JPanel();
         roundPanel.setLayout(new GridBagLayout());
         roundPanel.setBackground(Color.CYAN);
@@ -124,6 +124,7 @@ public class ChampionshipFrame extends JFrame{
         addGamesButtons(roundPanel, roundNumber);
     }
 
+    private
     void addGamesButtons(JPanel roundPanel, int roundNumber) {
         for(int i = 0; i < rounds.get(roundNumber).getNumberOfGames(); i++) {
             Game game = rounds.get(roundNumber).getGame(i);
