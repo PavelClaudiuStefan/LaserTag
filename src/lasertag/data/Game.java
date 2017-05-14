@@ -61,9 +61,7 @@ public class Game {
     public boolean hasWinner() {
         if(team1 == null || team2 == null)
             return false;
-        if(team1.isLosingTeam() || team2.isLosingTeam())
-            return true;
-        return false;
+        return (team1.isLosingTeam() || team2.isLosingTeam());
     }
 
     public Team getWinner() {

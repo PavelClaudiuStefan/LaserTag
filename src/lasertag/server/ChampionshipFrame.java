@@ -149,7 +149,7 @@ public class ChampionshipFrame extends JFrame{
         }
     }
 
-    void setGameScoreFrame(Game game) {
+    private void setGameScoreFrame(Game game) {
         gameScoreFrame = new GameScoreFrame(game);
         gameScoreFrame.showGameScore();
     }
@@ -183,7 +183,7 @@ public class ChampionshipFrame extends JFrame{
         return games;
     }
 
-    public int getNumberOfRounds() {
+    private int getNumberOfRounds() {
         int numberOfTeams = championshipTeams.size();
         int numberOfRounds = 0;
         while(numberOfTeams % 2 == 0) {
@@ -246,7 +246,7 @@ public class ChampionshipFrame extends JFrame{
     }
 
     private void advanceTeam(Team winningTeam, int roundNumber, int roundOrder){
-        if(roundNumber < rounds.size()-1); {
+        if(roundNumber < rounds.size()-1) {
             rounds.get(roundNumber + 1).getGame(roundOrder / 2).setTeam(winningTeam, roundOrder % 2);
             System.out.println(winningTeam.getName() + " : " + roundNumber + " & " + roundOrder + " -> " + roundOrder/2 + " & " + roundOrder%2);
         }

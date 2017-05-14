@@ -1,19 +1,18 @@
 package lasertag.server;
 
-import lasertag.data.Game;
-import lasertag.data.Player;
-import lasertag.data.Team;
+import lasertag.data.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class GameScoreFrame extends JFrame{
+class GameScoreFrame extends JFrame{
 
-    JPanel gameScorePanel;
-    GridBagConstraints constraints;
-    Game game;
+    private JPanel gameScorePanel;
+    private GridBagConstraints constraints;
+    private Game game;
 
-    public GameScoreFrame(Game game) {
+    GameScoreFrame(Game game) {
 
         super("Game score");
 
@@ -28,7 +27,7 @@ public class GameScoreFrame extends JFrame{
 
     }
 
-    public void showGameScore() {
+    void showGameScore() {
         gameScorePanel = new JPanel();
         gameScorePanel.setLayout(new GridBagLayout());
         constraints = new GridBagConstraints();
