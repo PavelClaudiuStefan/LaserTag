@@ -105,7 +105,6 @@ class NewTeamFrame extends JFrame {
 
         //Submit button
         JButton createTeamButton = new JButton("Create team");
-        /*
         createTeamButton.addActionListener(e -> {
             Team team = new Team(teamName.getText());
             for (int i = 0; i < numberOfPlayers; i++){
@@ -114,10 +113,9 @@ class NewTeamFrame extends JFrame {
             }
             teamsFrame.teamsList.add(team);
             teamsFrame.update();
-            //TODO - Update database
+            //TODO - Update database : Add players (Team optional)
             this.dispose();
         });
-        */
         constraints = new GridBagConstraints();
         constraints.gridx = 1;
         constraints.gridy = numberOfPlayers + 1;

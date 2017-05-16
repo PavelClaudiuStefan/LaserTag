@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 class TeamsFrame extends JFrame{
 
+    private JPanel mainPanel;
     private JPanel teamsPanel;
     private JPanel chosenTeamsPanel;
     private JPanel buttonsPanel;
@@ -43,13 +44,24 @@ class TeamsFrame extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        setMainPanel();
         addTeamsPanel();
-
         addChosenTeamsPanel();
-
         addButtonsPanel();
 
         //revalidate();
+    }
+
+    private void setMainPanel() {
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridBagLayout());
+        constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        add(mainPanel, constraints);
     }
 
     private void addTeamsPanel() {
@@ -67,13 +79,13 @@ class TeamsFrame extends JFrame{
 
         scroll = new JScrollPane(teamsPanel);
         scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        mainPanel.add(scroll, constraints);
 
         for (int i = 0; i < teamsList.size(); i++) {
-            if(!teamsList.get(i).isInChampionship()) {
+            if (!teamsList.get(i).isInChampionship()) {
                 teamsPanel.add(teamCheckBoxesList.get(i));
             }
         }
-        add(scroll, constraints);
     }
 
     private void addChosenTeamsPanel() {
@@ -97,7 +109,7 @@ class TeamsFrame extends JFrame{
                 chosenTeamsPanel.add(teamCheckBoxesList.get(i));
             }
         }
-        add(scroll, constraints);
+        mainPanel.add(scroll, constraints);
     }
 
     void moveToChampionship(JCheckBox checkBox) {
@@ -124,7 +136,7 @@ class TeamsFrame extends JFrame{
         constraints.weightx = 1.0;
         constraints.weighty = 0.1;
         constraints.fill = GridBagConstraints.BOTH;
-        add(buttonsPanel, constraints);
+        mainPanel.add(buttonsPanel, constraints);
 
         addButtons();
     }
@@ -170,17 +182,13 @@ class TeamsFrame extends JFrame{
 
     void update() {
 
-        remove(teamsPanel);
-        remove(chosenTeamsPanel);
-        remove(buttonsPanel);
+        remove(mainPanel);
 
-        teamCheckBoxesList = new ArrayList<>();
-        if (teamsList != null) {
-            for (Team t : teamsList) {
-                teamCheckBoxesList.add(makeCheckBoxFromTeam(t));
-            }
+        for (int i = teamCheckBoxesList.size(); i < teamsList.size(); i++) {
+            teamCheckBoxesList.add(makeCheckBoxFromTeam(teamsList.get(i)));
         }
 
+        setMainPanel();
         addTeamsPanel();
         addChosenTeamsPanel();
         addButtonsPanel();
