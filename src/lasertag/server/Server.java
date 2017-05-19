@@ -104,7 +104,7 @@ class Server {
                 } catch (ClassNotFoundException e) {
                     keepLooping = false;
                 }
-                //TEMPORAR
+                //TODO - TEMPORAR
                 //Do something with infoMessage
                 sendInfo();
             }

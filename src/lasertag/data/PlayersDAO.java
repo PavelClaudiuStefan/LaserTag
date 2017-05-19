@@ -2,6 +2,27 @@ package lasertag.data;
 
 import java.util.ArrayList;
 
+//DataAccesObject
+/*
+
+    Player:
+    -int id;
+    -String name;
+    -int teamID;
+
+    Team:
+    -int id;
+    -String name
+
+    public ArrayList<Player> getPlayers()
+    public void addPlayer(Player player)
+    public void setPlayer(int playerID)
+    public void deletePlayer(int playerID)
+
+    Mai avem nevoie de chestii, dar asta e minimul
+
+
+ */
 public class PlayersDAO {
 
     ArrayList<Player> playerList;
