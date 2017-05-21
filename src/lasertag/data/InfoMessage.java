@@ -6,16 +6,21 @@ public class InfoMessage implements Serializable {
 
     protected static final long serialVersionUID = 1112122200L;
 
-    int sourcePlayer;
-    int targetPlayer;
+    private int sourcePlayer;
+    private int targetPlayer;
 
-    public InfoMessage() {
+    private boolean endConnection;
 
+    public InfoMessage(String end) {
+        if(end.compareTo("end") == 0) {
+            endConnection = true;
+        }
     }
 
     public InfoMessage(int sourcePlayer, int targetPlayer) {
         this.sourcePlayer = sourcePlayer;
         this.targetPlayer = targetPlayer;
+        endConnection = false;
     }
 
     public int getSourcePlayer() {
@@ -24,5 +29,9 @@ public class InfoMessage implements Serializable {
 
     public int getTargetPlayer() {
         return targetPlayer;
+    }
+
+    public boolean isEnding(){
+        return endConnection;
     }
 }

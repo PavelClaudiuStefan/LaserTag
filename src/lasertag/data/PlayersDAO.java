@@ -1,70 +1,95 @@
 package lasertag.data;
 
+import java.sql.*;
 import java.util.ArrayList;
 
-//DataAccesObject
-/*
-
-    Player:
-    -int id;
-    -String name;
-    -int teamID;
-
-    Team:
-    -int id;
-    -String name
-
-    public ArrayList<Player> getPlayers()
-    public void addPlayer(Player player)
-    public void setPlayer(int playerID)
-    public void deletePlayer(int playerID)
-
-    Mai avem nevoie de chestii, dar asta e minimul
-
-
- */
 public class PlayersDAO {
 
-    ArrayList<Player> playerList;
-    ArrayList<Team> teamsList;
+    private ArrayList<Player> players;
+    private ArrayList<Team> teams;
+
+    private Connection connection = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
 
     public PlayersDAO() {
-        updatePlayerList();
-    }
 
-    public void updatePlayerList() {
-        playerList = new ArrayList<>(101);
+        String dbUrl = "jdbc:mysql://localhost:3306/laser_tag_database?autoReconnect=true&useSSL=false";
+        String user = "root";
+        String password = "09041996";
 
-        //TODO Read players from a database
-        //TEMPORAR
-        //Create players for testing
-        for (int i = 0; i < 34; i++) {
-            Player player = new Player(i, "Player #" + i);
-            playerList.add(player);
+        players = new ArrayList<>();
+        teams = new ArrayList<>();
+
+        try {
+            connection = DriverManager.getConnection(dbUrl, user, password);
+
+            //Create playersList
+            preparedStatement = connection.prepareStatement("select * from players");
+            resultSet  = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String name = resultSet.getString("name");
+                int teamId = resultSet.getInt("teamId");
+                players.add(new Player(id, name, teamId));
+            }
+
+            //Create teamsList
+            preparedStatement = connection.prepareStatement("select * from teams");
+            resultSet  = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String name = resultSet.getString("name");
+                teams.add(new Team(id, name));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } /*finally {
+            try { if (resultSet != null) resultSet.close(); } catch (Exception e) {e.printStackTrace();}
+            try { if (preparedStatement != null) preparedStatement.close(); } catch (Exception e) {e.printStackTrace();}
+            try { if (connection != null) connection.close(); } catch (Exception e) {e.printStackTrace();}
+        }*/
+
+        //Adding players to teams
+        for (Player player : players) {
+            teams.get(player.getTeamId()).addPlayer(player);
         }
-    }
 
-    public ArrayList<Player> getPlayers() {
-        return playerList;
     }
 
     public ArrayList<Team> getTeams() {
-        teamsList = new ArrayList<>(101);
 
-        //TEMPORAR
-        //Create teams with the existent temporar players
-        for(int i = 0; i < playerList.size()-1; i += 2) {
-            Team team = new Team("Team #" + (i/2+1));
-            team.addPlayer(playerList.get(i));
-            team.addPlayer(playerList.get(i+1));
-            teamsList.add(team);
+        //Debug
+        for (int i = 0; i < 8; i++) {
+            teams.get(i).setInChampionship(true);
         }
 
-        for (int i = 0; i  < 16; i++) {
-            teamsList.get(i).setInChampionship(true);
-        }
+        return teams;
+    }
 
-        return teamsList;
+    public void addPlayer(Player player) {
+        try {
+            int id = player.getId();
+            String name = player.getName();
+            int teamID = player.getTeamId();
+            String sql = "INSERT INTO `laser_tag_database`.`players` (`ID`, `name`, `teamID`) VALUES ('"+id+"', '"+name+"', '"+teamID+"')";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addTeam(Team team){
+        try {
+            int id = team.getId();
+            String name = team.getName();
+            String sql = "INSERT INTO `laser_tag_database`.`teams` (`ID`, `name`) VALUES ('"+id+"', '"+name+"')";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

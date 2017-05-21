@@ -2,6 +2,7 @@ package lasertag.server;
 
 import lasertag.data.PlayersDAO;
 import lasertag.data.Team;
+import lasertag.data.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,7 @@ class TeamsFrame extends JFrame{
 
     private ServerGUI serverGUI;
     private NewTeamFrame newTeamFrame;
+    private PlayersDAO dao;
 
     ArrayList<Team> teamsList;
     ArrayList<JCheckBox> teamCheckBoxesList;
@@ -29,7 +31,7 @@ class TeamsFrame extends JFrame{
         this.serverGUI = serverGUI;
 
         //Initiate the list of teams and the list of respective checkboxes
-        PlayersDAO dao = new PlayersDAO();
+        dao = new PlayersDAO();
         teamsList = dao.getTeams();
         teamCheckBoxesList = new ArrayList<>(101);
         if (teamsList != null) {
@@ -42,7 +44,14 @@ class TeamsFrame extends JFrame{
         setSize(600, 700);
         setLocationRelativeTo(null);
         setVisible(true);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                serverGUI.stopServer();
+                System.exit(0);
+            }
+        } );
 
         setMainPanel();
         addTeamsPanel();
@@ -203,5 +212,13 @@ class TeamsFrame extends JFrame{
         }
         newTeamFrame = new NewTeamFrame(this);
         newTeamFrame.start();
+    }
+
+    void addToDatabase(Player player) {
+        dao.addPlayer(player);
+    }
+
+    void addToDatabase(Team team) {
+        dao.addTeam(team);
     }
 }

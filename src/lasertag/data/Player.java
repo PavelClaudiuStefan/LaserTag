@@ -1,29 +1,30 @@
 package lasertag.data;
 
+import java.util.Date;
+
 public class Player {
 
     private int id;
-    //teamId == -1 : The player is not in a team
     private int teamId;
     private String name;
-    private static int lastIdUsed;
+    private static int lastIdUsed = -1;
+    private long lastTimeHit;
 
     private int numberOfHitsGiven;
     private int numberOfHitsTaken;
     private boolean alive;
 
-    Player(int id, String name) {
+    Player(int id, String name,  int teamId) {
         this.id = id;
         lastIdUsed = id;
-        teamId = -1;
+        this.teamId = teamId;
         this.name = name;
         alive = true;
     }
 
-    public Player(String name) {
-        this.id = lastIdUsed;
-        lastIdUsed++;
-        teamId = -1;
+    public Player(String name, int teamId) {
+        this.id = ++lastIdUsed;
+        this.teamId = teamId;
         this.name = name;
         alive = true;
     }
@@ -45,6 +46,7 @@ public class Player {
     }
 
     public void wasHit() {
+        lastTimeHit = new Date().getTime();
         numberOfHitsTaken++;
         if (numberOfHitsTaken == 3) {
             alive = false;
@@ -61,15 +63,15 @@ public class Player {
         alive = true;
     }
 
-    public int getTeamId() {
+    int getTeamId() {
         return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean canHit() {
+        return (new Date().getTime() - lastTimeHit) > 5000;
     }
 }

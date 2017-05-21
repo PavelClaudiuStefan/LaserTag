@@ -34,4 +34,13 @@ class Client {
             e.printStackTrace();
         }
     }
+
+    void end() {
+        try {
+            InfoMessage infoMessage = new InfoMessage("end");
+            output.writeObject(infoMessage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

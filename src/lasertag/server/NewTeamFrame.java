@@ -16,8 +16,6 @@ class NewTeamFrame extends JFrame {
     private JTextField teamName;
     private TeamsFrame teamsFrame;
 
-    private GridBagConstraints constraints;
-
     NewTeamFrame(TeamsFrame teamsFrame) {
         super("New Team");
 
@@ -40,7 +38,7 @@ class NewTeamFrame extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setBackground(Color.CYAN);
-        constraints = new GridBagConstraints();
+        GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.weightx = 1;
@@ -108,12 +106,14 @@ class NewTeamFrame extends JFrame {
         createTeamButton.addActionListener(e -> {
             Team team = new Team(teamName.getText());
             for (int i = 0; i < numberOfPlayers; i++){
-                Player player = new Player(playerNames.get(i).getText());
+                Player player = new Player(playerNames.get(i).getText(), team.getId());
                 team.addPlayer(player);
+                teamsFrame.addToDatabase(player);
             }
             teamsFrame.teamsList.add(team);
+            teamsFrame.addToDatabase(team);
             teamsFrame.update();
-            //TODO - Update database : Add players (Team optional)
+
             this.dispose();
         });
         constraints = new GridBagConstraints();

@@ -4,15 +4,25 @@ import java.util.ArrayList;
 
 public class Team {
 
-    private static int uniqueId = 0;
+    private static int lastIdUsed = -1;
     private int id;
     private String name;
     private ArrayList<Player> playerList;
     private int numberOfPlayers;
     private boolean inChampionship;
 
+    public Team(int id, String name) {
+        this.id = id;
+        lastIdUsed = id;
+        this.name = name;
+        numberOfPlayers = 2;
+        inChampionship = false;
+
+        playerList = new ArrayList<>(numberOfPlayers);
+    }
+
     public Team(String name) {
-        id = ++uniqueId;
+        this.id = ++lastIdUsed;
         this.name = name;
         numberOfPlayers = 2;
         inChampionship = false;
@@ -59,21 +69,18 @@ public class Team {
         return name + " #" + id;
     }
 
-    public int getNumberOfHitsGiven() {
-        int hits  = 0;
-        for (Player p : playerList) {
-            hits += p.getNumberOfHitsGiven();
-        }
-        return hits;
-    }
-
-    /*public int getNumberOfPlayers() {
+    int getNumberOfPlayers() {
         return numberOfPlayers;
-    }*/
+    }
 
     void resetScore() {
         for (Player p : playerList) {
             p.resetSore();
         }
     }
+
+    public int getId() {
+        return id;
+    }
+
 }

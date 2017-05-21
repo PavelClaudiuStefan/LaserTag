@@ -13,7 +13,7 @@ public class ClientGUI extends JFrame {
         client = new Client(host, port);
         client.start();
 
-        simulateChampionship();
+        //simulateChampionship();
     }
 
     public synchronized void start() {
@@ -74,11 +74,20 @@ public class ClientGUI extends JFrame {
         setSize(250, 200);
         //setLocationRelativeTo(null);
         setVisible(true);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                client.end();
+                System.exit(0);
+            }
+        } );
     }
 
-    public void simulateChampionship() {
-        for(int i = 0; i < 30; i+=2) {
+    //Simulates 8 teams championship (Except the final game)
+    private void simulateChampionship() {
+        //Round 1
+        for(int i = 0; i < 16; i+=4) {
             for (int j = 0; j < 3; j++) {
                 client.sendInfoToPlayer(i, i+2);
                 System.out.println(i + " " + (i + 2));
@@ -92,5 +101,22 @@ public class ClientGUI extends JFrame {
             }
             System.out.println();
         }
+
+        //Round 2
+        for(int i = 0; i < 16; i+=8) {
+            for (int j = 0; j < 3; j++) {
+                client.sendInfoToPlayer(i, i+4);
+                System.out.println(i + " " + (i + 4));
+                client.sendInfoToPlayer(i, i+5);
+                System.out.println(i + " " + (i + 5));
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            System.out.println();
+        }
+
     }
 }

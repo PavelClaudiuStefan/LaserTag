@@ -16,7 +16,7 @@ import lasertag.data.Round;
 
 class ChampionshipFrame extends JFrame{
 
-    private Game currentGame;
+    private Game currentGame = null;
     private ArrayList<Team> championshipTeams;
     private ArrayList<Round> rounds;
     private JTextArea debugTextArea;
@@ -27,14 +27,16 @@ class ChampionshipFrame extends JFrame{
 
     private GridBagConstraints constraints;
 
+    private boolean championshipOver;
+
     ChampionshipFrame(ArrayList<Team> championshipTeams) {
         super("Championship");
         this.championshipTeams = championshipTeams;
 
         //Set random matchups between the teams
-        //Don't randomize if you wanna use the StartClientSimulator class
-        //long seed = System.nanoTime();
-        //Collections.shuffle(championshipTeams, new Random(seed));
+        //Don't randomize if you want to simulte a 8 teams championship (Doesn't simulate the final game)
+        long seed = System.nanoTime();
+        Collections.shuffle(championshipTeams, new Random(seed));
 
         setLayout(new GridBagLayout());
         setSize(700, 500);
@@ -59,6 +61,8 @@ class ChampionshipFrame extends JFrame{
 
         mainPanel.revalidate();
         mainPanel.repaint();
+
+        championshipOver = false;
     }
 
     private void debugFooter() {
@@ -124,15 +128,18 @@ class ChampionshipFrame extends JFrame{
         addGamesButtons(roundPanel, roundNumber);
     }
 
-    private
-    void addGamesButtons(JPanel roundPanel, int roundNumber) {
+    private void addGamesButtons(JPanel roundPanel, int roundNumber) {
         for(int i = 0; i < rounds.get(roundNumber).getNumberOfGames(); i++) {
             Game game = rounds.get(roundNumber).getGame(i);
-            JButton button = new JButton(game.gameLabel());
+            JButton button;
+            if (game.hasWinner()) {
+                button = new JButton(game.getLabelWithWinner());
+            } else {
+                button = new JButton(game.gameLabel());
+            }
             button.setFocusable(false);
             if (game.isCurrentGame()) {
                 button.setBackground(Color.green);
-                //button.setFont(new Font(button.getFont().getName(), Font.ITALIC + Font.BOLD, 18));
             }
             button.addActionListener(e -> {
                 if(gameScoreFrame != null) {
@@ -156,7 +163,6 @@ class ChampionshipFrame extends JFrame{
     }
 
     private void initiateBracket() {
-        //TODO - Maybe use the database for this
         for(int i = 0; i < this.getNumberOfRounds(); i++) {
             if (i == 0) {
                 rounds = new ArrayList<>();
@@ -200,37 +206,55 @@ class ChampionshipFrame extends JFrame{
         debugInfo("Player #" + source + " hit Player #" + target);
         // If championship started (currentGameTeams is not null) and both players are alive and in the current game,
         // update players and database
-        if(currentGame != null) {
-            for (Player p1 : currentGame.getTeam(0).getPlayers()) {
-                for (Player p2 : currentGame.getTeam(1).getPlayers()) {
-                    //Case 1 : Team 1 player hit a team 2 player
-                    if ( (p1.isAlive() && p1.getId() == source) && (p2.isAlive() && p2.getId() == target) ) {
-                        p1.hit();
-                        p2.wasHit();
-                        if (gameScoreFrame != null) {
-                            gameScoreFrame.updateGameScore();
+        if (!championshipOver) {
+            if(currentGame != null) {
+                //p1 - Player in Team 1
+                for (Player p1 : currentGame.getTeam(1).getPlayers()) {
+                    //p2 - Player in Team 2
+                    for (Player p2 : currentGame.getTeam(2).getPlayers()) {
+                        //Case 1 : Team 1 player hit a team 2 player
+                        if ( (p1.isAlive() && p1.getId() == source) && (p2.isAlive() && p2.getId() == target) && (p1.canHit()) ) {
+                            p1.hit();
+                            p2.wasHit();
+                            int indexP1 = currentGame.getTeam(1).getPlayers().indexOf(p1);
+                            int indexP2 = currentGame.getTeam(2).getPlayers().indexOf(p2);
+                            currentGame.updateGame(indexP1, indexP2);
+                            if (gameScoreFrame != null) {
+                                gameScoreFrame.updateGameScore();
+                            }
+
+                            //Case 2 : Team 2 player hit a team 1 player
+                        } else if ( (p1.isAlive() && p1.getId() == target) && (p2.isAlive() && p2.getId() == source) && (p2.canHit()) ) {
+                            p2.hit();
+                            p1.wasHit();
+                            int indexP2 = currentGame.getTeam(2).getPlayers().indexOf(p2);
+                            int indexP1 = currentGame.getTeam(1).getPlayers().indexOf(p1);
+                            currentGame.updateGame(indexP1, indexP2);
+                            if (gameScoreFrame != null) {
+                                gameScoreFrame.updateGameScore();
+                            }
                         }
 
-                        //Case 2 : Team 2 player hit a team 1 player
-                    } else if ( (p1.isAlive() && p1.getId() == target) && (p2.isAlive() && p2.getId() == source) ) {
-                        p2.hit();
-                        p1.wasHit();
-                        if (gameScoreFrame != null) {
-                            gameScoreFrame.updateGameScore();
-                        }
+                        //Test if game is over
+                        if (currentGame.hasWinner()) {
+                            advanceTeam(currentGame.getWinner(), currentGame.getRoundNumber(), currentGame.getRoundOrder());
+                            currentGame.setCurrentGame(false);
+                            if (currentGame.getRoundNumber() != rounds.size() - 1) {
+                                //if current game is not the final championship game
+                                currentGame = nextGame(currentGame.getRoundNumber(), currentGame.getRoundOrder());
+                                currentGame.setCurrentGame(true);
+                            } else {
+                                championshipOver = true;
+                            }
 
-                    }
-                    //TODO : Update database
-                    //Test if game is over
-                    if (currentGame.hasWinner()) {
-                        advanceTeam(currentGame.getWinner(), currentGame.getRoundNumber(), currentGame.getRoundOrder());
-                        currentGame.setCurrentGame(false);
-                        currentGame = nextGame(currentGame.getRoundNumber(), currentGame.getRoundOrder());
-                        currentGame.setCurrentGame(true);
-                        mainPanel.remove(bracketPanelScroll);
-                        setBracketPanel();
-                        mainPanel.revalidate();
-                        mainPanel.repaint();
+                            mainPanel.remove(bracketPanelScroll);
+                            setBracketPanel();
+                            mainPanel.revalidate();
+                            mainPanel.repaint();
+
+                            if (championshipOver)
+                                break;
+                        }
                     }
                 }
             }
@@ -249,7 +273,11 @@ class ChampionshipFrame extends JFrame{
     private void advanceTeam(Team winningTeam, int roundNumber, int roundOrder){
         if(roundNumber < rounds.size()-1) {
             rounds.get(roundNumber + 1).getGame(roundOrder / 2).setTeam(winningTeam, roundOrder % 2);
-            System.out.println(winningTeam.getName() + " : " + roundNumber + " & " + roundOrder + " -> " + roundOrder/2 + " & " + roundOrder%2);
+        } else {
+            if (championshipOver) {
+                System.out.println("\n\nChampionship over!");
+                System.out.println(rounds.get(rounds.size()-1).getGame(0).getWinner().getName() + " is the best team!");
+            }
         }
 
     }

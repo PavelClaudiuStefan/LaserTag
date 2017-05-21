@@ -27,13 +27,13 @@ class Server {
             ServerSocket serverSocket = new ServerSocket(port);
             keepGoing = true;
             while(keepGoing) {
-                //TEMPORAR
                 System.out.println("Server waiting for Clients on port " + port + ".");
 
                 Socket socket = serverSocket.accept();
-                if(!keepGoing) {
+
+                if(!keepGoing)
                     break;
-                }
+
                 ClientThread clientThread = new ClientThread(socket);
                 clientList.add(clientThread);
                 clientThread.start();
@@ -41,6 +41,7 @@ class Server {
             //keepGoing == false
             try {
                 serverSocket.close();
+                System.out.println("Server closed!");
                 for (ClientThread tc : clientList) {
                     try {
                         tc.input.close();
@@ -60,6 +61,10 @@ class Server {
             System.out.println("Exception on new ServerSocket: " + e + "\n");
         }
 
+    }
+
+    void stopServer() {
+        keepGoing = false;
     }
 
     //Maybe put a JButton in the server gui
@@ -94,7 +99,6 @@ class Server {
             boolean keepLooping = true;
             while(keepLooping) {
                 try {
-                    infoMessage = new InfoMessage();
                     infoMessage = (InfoMessage) input.readObject();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -104,11 +108,14 @@ class Server {
                 } catch (ClassNotFoundException e) {
                     keepLooping = false;
                 }
-                //TODO - TEMPORAR
-                //Do something with infoMessage
+                if (infoMessage.isEnding()) {
+                    System.out.println("A client disconnected!");
+                    close();
+                    break;
+                }
                 sendInfo();
             }
-            close();
+            //close();
         }
 
         void close() {
@@ -129,7 +136,6 @@ class Server {
 
         void sendInfo(){
             serverGUI.sendInfoToChampionshipFrame(infoMessage.getSourcePlayer(), infoMessage.getTargetPlayer());
-            //TODO : Update the database
         }
 
     }

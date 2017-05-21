@@ -20,6 +20,10 @@ public class ServerGUI {
         teamsFrame.revalidate();
     }
 
+    void stopServer() {
+        server.stopServer();
+    }
+
     void startChampionship(ArrayList<Team> teamsList) {
         championshipFrame = new ChampionshipFrame(teamsList);
         championshipFrame.revalidate();

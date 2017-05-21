@@ -53,8 +53,8 @@ class GameScoreFrame extends JFrame{
             constraints.gridy = 0;
             leftPanel.add(leftTeamLabel, constraints);
         } else {
-            Team team = game.getTeam(0);
-            label = team.getName() + ": " + team.getNumberOfHitsGiven();
+            Team team = game.getTeam(1);
+            label = team.getName() + ": " + game.getTeamScore(1);
 
             //Team name
             JLabel leftTeamLabel = new JLabel(label);
@@ -64,13 +64,13 @@ class GameScoreFrame extends JFrame{
             leftPanel.add(leftTeamLabel, constraints);
 
             //Score and name init
-            JLabel playersScoreAndName1 = new JLabel("Score   /   Player");
+            JLabel playersScoreAndName1 = new JLabel("Score  /  Player");
             constraints = new GridBagConstraints();
             constraints.gridy = 1;
             leftPanel.add(playersScoreAndName1, constraints);
 
             //Score and names
-            setPlayerScores(leftPanel, team);
+            setPlayerScores(leftPanel, game, 1);
         }
 
 
@@ -105,8 +105,8 @@ class GameScoreFrame extends JFrame{
             constraints.gridy = 0;
             rightPanel.add(rightTeamLabel, constraints);
         } else {
-            Team team = game.getTeam(1);
-            label = team.getName() + ": " + team.getNumberOfHitsGiven();
+            Team team = game.getTeam(2);
+            label = team.getName() + ": " + game.getTeamScore(2);
 
             //Team name
             JLabel rightTeamLabel = new JLabel(label);
@@ -116,12 +116,12 @@ class GameScoreFrame extends JFrame{
             rightPanel.add(rightTeamLabel, constraints);
 
             //Score and name init
-            JLabel playersScoreAndName2 = new JLabel("Score/Player");
+            JLabel playersScoreAndName2 = new JLabel("Score  /  Player");
             constraints = new GridBagConstraints();
             constraints.gridy = 1;
             rightPanel.add(playersScoreAndName2, constraints);
             //Score and names
-            setPlayerScores(rightPanel, team);
+            setPlayerScores(rightPanel, game, 2);
         }
 
     }
@@ -132,10 +132,13 @@ class GameScoreFrame extends JFrame{
         return defaultTeamLabel;
     }
 
-    private void setPlayerScores(JPanel panel, Team team) {
+    private void setPlayerScores(JPanel panel, Game game, int teamNumber) {
         int y = 1;
-        for (Player p : team.getPlayers()) {
-            JLabel scoreName = new JLabel(p.getNumberOfHitsGiven() + "/" + p.getNumberOfHitsTaken() + " - " + p.getName());
+        int[] hitsGiven = game.getTeamPlayerHitsGiven(teamNumber);
+        int[] hitsTaken = game.getTeamPlayerHitsTaken(teamNumber);
+        for (int i = 0; i  < game.getNumberOfPlayers(); i++) {
+            String name = game.getTeam(teamNumber).getPlayers().get(i).getName();
+            JLabel scoreName = new JLabel(hitsGiven[i] + "/" + hitsTaken[i] + " : " + name);
             constraints = new GridBagConstraints();
             constraints.gridy = ++y;
             panel.add(scoreName, constraints);
