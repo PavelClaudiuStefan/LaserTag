@@ -60,9 +60,9 @@ public class PlayersDAO {
     public ArrayList<Team> getTeams() {
 
         //Debug
-        for (int i = 0; i < 8; i++) {
+        /*for (int i = 0; i < 8; i++) {
             teams.get(i).setInChampionship(true);
-        }
+        }*/
 
         return teams;
     }

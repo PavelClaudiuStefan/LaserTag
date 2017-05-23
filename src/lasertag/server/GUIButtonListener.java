@@ -1,10 +1,8 @@
 package lasertag.server;
 
 import lasertag.data.Team;
+import lasertag.misc.Sound;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -87,9 +85,9 @@ public class GUIButtonListener implements ActionListener  {
         if (validNumberOfTeams(championshipTeams.size())) {
             serverGUI.startChampionship(championshipTeams);
             teamsFrame.dispose();
-            //playSound("xpStart.wav");
+            //Sound.playSound("xpStart.wav");
         } else {
-            playSound("xpError.wav");
+            Sound.playSound("xpError.wav");
 
             JOptionPane.showMessageDialog(teamsFrame,
                     "The number of teams must be a power of 2, greater than 1 (Examples: 2, 4, 8, 16, 32...)",
@@ -102,18 +100,4 @@ public class GUIButtonListener implements ActionListener  {
         return ((x & (x - 1)) == 0 && x != 0 && x != 1);
     }
 
-    private static synchronized void playSound(final String url) {
-        Runnable play = () -> {
-            try {
-                Clip clip = AudioSystem.getClip();
-                AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-                        GUIButtonListener.class.getResourceAsStream("/lasertag/sounds/" + url));
-                clip.open(inputStream);
-                clip.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-        new Thread(play).start();
-    }
 }

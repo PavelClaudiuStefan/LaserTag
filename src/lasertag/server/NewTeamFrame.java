@@ -2,6 +2,7 @@ package lasertag.server;
 
 import lasertag.data.Player;
 import lasertag.data.Team;
+import lasertag.misc.Sound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -104,17 +105,38 @@ class NewTeamFrame extends JFrame {
         //Submit button
         JButton createTeamButton = new JButton("Create team");
         createTeamButton.addActionListener(e -> {
-            Team team = new Team(teamName.getText());
-            for (int i = 0; i < numberOfPlayers; i++){
-                Player player = new Player(playerNames.get(i).getText(), team.getId());
-                team.addPlayer(player);
-                teamsFrame.addToDatabase(player);
-            }
-            teamsFrame.teamsList.add(team);
-            teamsFrame.addToDatabase(team);
-            teamsFrame.update();
 
-            this.dispose();
+            boolean ok = true; //true if every JTextField has a String
+            ArrayList<String> names = new ArrayList<>();
+            for (int i = 0; i < numberOfPlayers; i++){
+                String playerName = playerNames.get(i).getText();
+                if (playerName.compareTo("") != 0) {
+                    names.add(playerName);
+                } else {
+                    ok = false;
+                    break;
+                }
+            }
+            String teamNameString = teamName.getText();
+            if(teamNameString.isEmpty()) {
+                ok = false;
+            }
+
+            if (ok) {
+                Team team = new Team(teamNameString);
+                for (int i = 0; i < numberOfPlayers; i++){
+                    Player player = new Player(names.get(i), team.getId());
+                    team.addPlayer(player);
+                    teamsFrame.addToDatabase(player);
+                }
+                teamsFrame.teamsList.add(team);
+                teamsFrame.addToDatabase(team);
+                teamsFrame.update();
+
+                this.dispose();
+            } else {
+                Sound.playSound("meepMerp.wav");
+            }
         });
         constraints = new GridBagConstraints();
         constraints.gridx = 1;

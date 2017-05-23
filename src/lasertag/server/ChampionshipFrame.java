@@ -29,6 +29,8 @@ class ChampionshipFrame extends JFrame{
 
     private boolean championshipOver;
 
+    private Team championshipWinner;
+
     ChampionshipFrame(ArrayList<Team> championshipTeams) {
         super("Championship");
         this.championshipTeams = championshipTeams;
@@ -244,6 +246,7 @@ class ChampionshipFrame extends JFrame{
                                 currentGame = nextGame(currentGame.getRoundNumber(), currentGame.getRoundOrder());
                                 currentGame.setCurrentGame(true);
                             } else {
+                                championshipWinner = currentGame.getWinner();
                                 championshipOver = true;
                             }
 
@@ -276,7 +279,12 @@ class ChampionshipFrame extends JFrame{
         } else {
             if (championshipOver) {
                 System.out.println("\n\nChampionship over!");
-                System.out.println(rounds.get(rounds.size()-1).getGame(0).getWinner().getName() + " is the best team!");
+                System.out.println(winningTeam.getName() + " is the best team!");
+
+                JOptionPane.showMessageDialog(this,
+                        championshipWinner.getName() + " wins the championship!",
+                        "Congratulations!",
+                        JOptionPane.PLAIN_MESSAGE);
             }
         }
 

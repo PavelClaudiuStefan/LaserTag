@@ -138,7 +138,8 @@ class GameScoreFrame extends JFrame{
         int[] hitsTaken = game.getTeamPlayerHitsTaken(teamNumber);
         for (int i = 0; i  < game.getNumberOfPlayers(); i++) {
             String name = game.getTeam(teamNumber).getPlayers().get(i).getName();
-            JLabel scoreName = new JLabel(hitsGiven[i] + "/" + hitsTaken[i] + " : " + name);
+            int id = game.getTeam(teamNumber).getPlayers().get(i).getId();
+            JLabel scoreName = new JLabel(hitsGiven[i] + "/" + hitsTaken[i] + " : " + name + "(" + id + ")");
             constraints = new GridBagConstraints();
             constraints.gridy = ++y;
             panel.add(scoreName, constraints);
