@@ -97,7 +97,7 @@ public class GUIButtonListener implements ActionListener  {
     }
 
     private boolean validNumberOfTeams(int x) {
-        return ((x & (x - 1)) == 0 && x != 0 && x != 1);
+        return ((x & (x - 1)) == 0 && x != 0 && x != 1) || x == 2;
     }
 
 }
