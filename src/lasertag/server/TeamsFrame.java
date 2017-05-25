@@ -49,6 +49,7 @@ class TeamsFrame extends JFrame{
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 serverGUI.stopServer();
+                dao.stopConnection();
                 System.exit(0);
             }
         } );

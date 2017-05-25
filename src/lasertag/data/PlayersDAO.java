@@ -43,7 +43,7 @@ public class PlayersDAO {
                 teams.add(new Team(id, name));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("MySQL server is stopped!\n Start the server and restart the app!");
         } /*finally {
             try { if (resultSet != null) resultSet.close(); } catch (Exception e) {e.printStackTrace();}
             try { if (preparedStatement != null) preparedStatement.close(); } catch (Exception e) {e.printStackTrace();}
@@ -90,6 +90,12 @@ public class PlayersDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void stopConnection() {
+        try { if (resultSet != null) resultSet.close(); } catch (Exception e) {e.printStackTrace();}
+        try { if (preparedStatement != null) preparedStatement.close(); } catch (Exception e) {e.printStackTrace();}
+        try { if (connection != null) connection.close(); } catch (Exception e) {e.printStackTrace();}
     }
 
 }

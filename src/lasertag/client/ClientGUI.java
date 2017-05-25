@@ -78,8 +78,12 @@ public class ClientGUI extends JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                client.end();
-                System.exit(0);
+                try {
+                    client.end();
+                    System.exit(0);
+                } catch(Exception e) {
+                    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+                }
             }
         } );
     }

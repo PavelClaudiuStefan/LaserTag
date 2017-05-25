@@ -22,7 +22,7 @@ class Client {
             Socket socket = new Socket(host, port);
             output = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Can't connect, server was not started");
         }
     }
 
@@ -31,7 +31,7 @@ class Client {
             InfoMessage infoMessage = new InfoMessage(source, target);
             output.writeObject(infoMessage);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Can't send info, server was closed");
         }
     }
 
