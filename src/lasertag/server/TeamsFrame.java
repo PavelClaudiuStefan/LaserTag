@@ -216,7 +216,7 @@ class TeamsFrame extends JFrame{
     }
 
     void addToDatabase(Player player) {
-        dao.addPlayer(player);
+            dao.addPlayer(player);
     }
 
     void addToDatabase(Team team) {

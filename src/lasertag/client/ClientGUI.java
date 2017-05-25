@@ -13,6 +13,7 @@ public class ClientGUI extends JFrame {
         client = new Client(host, port);
         client.start();
 
+        //Simulates a champhionship formed with 8 teams - Used for debugging
         //simulateChampionship();
     }
 
@@ -79,7 +80,7 @@ public class ClientGUI extends JFrame {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 try {
-                    client.end();
+                    //client.sendEnd();
                     System.exit(0);
                 } catch(Exception e) {
                     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

@@ -1,3 +1,17 @@
+/*
+ * Online database is used for ease of using this app on multiple computers
+ * Local database commented out
+ *
+ * Database name: laser_tag_database
+ * Tables:  -players    -ID
+ *                      -name
+ *                      -teamID
+ *
+ *          -teams      -ID
+ *                      -name
+ */
+
+
 package lasertag.data;
 
 import java.sql.*;
@@ -14,9 +28,16 @@ public class PlayersDAO {
 
     public PlayersDAO() {
 
-        String dbUrl = "jdbc:mysql://localhost:3306/laser_tag_database?autoReconnect=true&useSSL=false";
+        //Local database - Needs a local mysql server with a laser_tag_database schema and 2 tables: players and teams
+        /*String dbUrl = "jdbc:mysql://localhost:3306/laser_tag_database?autoReconnect=true&useSSL=false";
         String user = "root";
-        String password = "09041996";
+        String password = "09041996";*/
+
+        //Online database : sql11.freemysqlhosting.net
+        String dbUrl = "jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11176507?autoReconnect=true&useSSL=false";
+        String user = "sql11176507";
+        String password = "PwEndsl7EG";
+
 
         players = new ArrayList<>();
         teams = new ArrayList<>();
@@ -72,7 +93,8 @@ public class PlayersDAO {
             int id = player.getId();
             String name = player.getName();
             int teamID = player.getTeamId();
-            String sql = "INSERT INTO `laser_tag_database`.`players` (`ID`, `name`, `teamID`) VALUES ('"+id+"', '"+name+"', '"+teamID+"')";
+            //String sql = "INSERT INTO `laser_tag_database`.`players` (`ID`, `name`, `teamID`) VALUES ('"+id+"', '"+name+"', '"+teamID+"')";
+            String sql = "INSERT INTO `players` (`ID`, `name`, `teamID`) VALUES ('"+id+"', '"+name+"', '"+teamID+"')";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -84,7 +106,8 @@ public class PlayersDAO {
         try {
             int id = team.getId();
             String name = team.getName();
-            String sql = "INSERT INTO `laser_tag_database`.`teams` (`ID`, `name`) VALUES ('"+id+"', '"+name+"')";
+            //String sql = "INSERT INTO `laser_tag_database`.`teams` (`ID`, `name`) VALUES ('"+id+"', '"+name+"')";
+            String sql = "INSERT INTO `teams` (`ID`, `name`) VALUES ('"+id+"', '"+name+"')";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {

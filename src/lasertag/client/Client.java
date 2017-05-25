@@ -35,7 +35,7 @@ class Client {
         }
     }
 
-    void end() {
+    void sendEnd() {
         try {
             InfoMessage infoMessage = new InfoMessage("end");
             output.writeObject(infoMessage);

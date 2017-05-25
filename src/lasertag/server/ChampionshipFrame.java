@@ -36,15 +36,10 @@ class ChampionshipFrame extends JFrame{
         this.championshipTeams = championshipTeams;
 
         //Set random matchups between the teams
-        //Don't randomize if you want to simulte a 8 teams championship (Doesn't simulate the final game)
         long seed = System.nanoTime();
         Collections.shuffle(championshipTeams, new Random(seed));
 
         setLayout(new GridBagLayout());
-        setSize(700, 500);
-        setLocationRelativeTo(null);
-        setVisible(true);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         //debugFooter();
         initiateBracket();
@@ -60,6 +55,24 @@ class ChampionshipFrame extends JFrame{
         add(mainPanel, constraints);
 
         setBracketPanel();
+
+        //NumberOfTeams == 2
+        int width = 300;
+        int height = 100;
+        int numberOfTeams = championshipTeams.size();
+        int numberOfRounds = rounds.size();
+        if(numberOfTeams > 2 && numberOfTeams <= 32) {
+            width = numberOfRounds * 200;
+            height = numberOfTeams * 30;
+        } else if(numberOfTeams > 32){
+            width = 1000;
+            height = 900;
+        }
+        setSize(width, height);
+
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         mainPanel.revalidate();
         mainPanel.repaint();
@@ -264,7 +277,7 @@ class ChampionshipFrame extends JFrame{
         }
     }
 
-
+    //Returns the next game in the current round, or the first game in the next round
     private Game nextGame(int roundNumber, int roundOrder) {
         if(roundOrder < rounds.get(roundNumber).getNumberOfGames() - 1) {
             return rounds.get(roundNumber).getGame(roundOrder + 1);
@@ -273,11 +286,15 @@ class ChampionshipFrame extends JFrame{
         }
     }
 
+    //The winning team is advanced in the next round, or if it was the final game it displays the championship winner
     private void advanceTeam(Team winningTeam, int roundNumber, int roundOrder){
         if(roundNumber < rounds.size()-1) {
             rounds.get(roundNumber + 1).getGame(roundOrder / 2).setTeam(winningTeam, roundOrder % 2);
         } else {
             if (championshipOver) {
+                if(gameScoreFrame != null) {
+                    gameScoreFrame.dispose();
+                }
                 System.out.println("\n\nChampionship over!");
                 System.out.println(winningTeam.getName() + " is the best team!");
 
